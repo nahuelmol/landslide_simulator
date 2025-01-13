@@ -1,3 +1,3 @@
 
-gcc example.cpp -o output.exe  -lstdc++ 
+gcc example.cpp -o output.exe  -lstdc++  -lgdi32
 
