@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <math.h>
+#include "models.h"
 
 void navier_stokes_eq() {
     std::cout << "executing navier stokes eq"<< std::endl;
