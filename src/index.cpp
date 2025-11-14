@@ -14,7 +14,7 @@ void euler_eq() {
 
 int main () {
     std::string elements = "polygon";
-    std::vector<float> L = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    std::vector<float> L = {1.3, 1.5, 1.7, 2.0, 2.44, 2.033, 3.1, 2.71};
     initial_model(8, elements, L);
     return 0;
 }

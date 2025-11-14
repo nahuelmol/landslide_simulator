@@ -18,7 +18,7 @@ float dimension(int i, int j){
     return result;
 }
 
-void least_squares(std::vector<float> L, std::vector<float> C) {
+void least_squares(std::vector<float> L, std::vector<float> C, std::vector<std::vector<float>> dims, std::vector<float> dens) {
     //comparing
     std::vector<float> LSE;
     for(int i = 0; i < L.size(); i++){
@@ -46,6 +46,8 @@ void initial_model(int n, std::string elements, std::vector<float> L) {
 
     std::vector<float> calculated;
     std::vector<float> densities;
+    std::vector<float> row; 
+    std::vector<std::vector<float>> dimensions;
 
     for (int j = 0; j<n; j++){
         float random = gen();
@@ -55,16 +57,20 @@ void initial_model(int n, std::string elements, std::vector<float> L) {
     for (int i = 0; i< n;i++){
         //Block BLOCK(i); for object oriented
         for(int j = 0; j < n; j++) {
-            float effect = G * densities[j] * dimension(i,j);
+            float dim = dimension(i,j);
+            row.push_back(dim);
+            float effect = G * densities[j] * dim;
             aux = effect + aux;
         }
+        dimensions.push_back(row);
+        row.clear();
         calculated.push_back(aux);
         aux = 0.0;
     }
     for(float each:calculated){
         std::cout << "effect ->" << each << std::endl;
     }
-    least_squares(L, calculated);
+    least_squares(L, calculated, dimensiones, densities);
 }
 
 
