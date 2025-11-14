@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 
-float dimension(int i);
+float dimension(int i, int j);
 float gen();
 void initial_model(int n, std::string elements, std::vector<float> L);
 void least_squares(std::vector<float> L, std::vector<float> C);

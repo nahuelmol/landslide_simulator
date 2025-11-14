@@ -13,8 +13,9 @@ void euler_eq() {
 }
 
 int main () {
-    navier_stokes_eq();
-    euler_eq();
+    std::string elements = "polygon";
+    std::vector<float> L = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    initial_model(8, elements, L);
     return 0;
 }
 

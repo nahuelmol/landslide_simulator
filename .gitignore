@@ -3,3 +3,6 @@
 *.un~
 *.bat~
 *.cpp~
+
+src/*.o
+src/builder/*.o
