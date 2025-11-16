@@ -6,3 +6,4 @@
 
 src/*.o
 src/builder/*.o
+include/Eigen

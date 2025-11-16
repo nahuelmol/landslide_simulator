@@ -7,6 +7,7 @@
 #include <Eigen/Dense>
 #include "blocks.h"
 #include "matrix_math.h"
+#include "set_stack.h"
 
 using Eigen::VectorXd;
 using Eigen::MatrixXd;
@@ -64,6 +65,9 @@ float gen() {
 void initial_model(int n, std::string elements, VectorXd L) {
     if (elements == "polygons") {
         std::cout << "making Talwani approach" << std::endl;
+        build_stack(n);
+    } else if (elements == "prisms") {
+        std::cout << "making prisms approach" << std::endl;
     }
     //--@n blocks
     //--blocks's dimension will be a constant
