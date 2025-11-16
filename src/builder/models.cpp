@@ -4,9 +4,12 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
+#include <Eigen/Dense>
 #include "blocks.h"
 #include "matrix_math.h"
 
+using Eigen::VectorXd;
+using Eigen::MatrixXd;
 const double G = 6.67430e-11;
 
 float dimension(int i, int j){
@@ -19,19 +22,19 @@ float dimension(int i, int j){
     return result;
 }
 
-void least_squares(std::vector<float> L, std::vector<float> C, std::vector<std::vector<float>> dims, std::vector<float> dens) {
+void least_squares(VectorXd L, VectorXd C, MatrixXd dims, VectorXd dens) {
     //comparing
-    std::vector<float> LSE;
+    VectorXd LSE(L.size());
     float BIAS_SSE = 0.5;
     float SSE = 0.0;
-    std::vector<float> modified_C;
-    std::vector<float> diffs;
+    VectorXd modified_C(L.size());
+    VectorXd diffs(L.size());
     for(int i = 0; i < int(L.size()); i++){
         float diff = L[i] - C[i];
-        diffs.push_back(diff);
+        diffs(i) = diff;
         float E2 = std::pow(diff, 2);
         SSE = SSE + E2;
-        LSE.push_back(E2);
+        LSE(i) = E2;
     }
 
     if(SSE < BIAS_SSE) {
@@ -39,30 +42,16 @@ void least_squares(std::vector<float> L, std::vector<float> C, std::vector<std::
         std::cout << "BIAS_SSE:" << BIAS_SSE << std::endl;
     }
 
-    for(int i=0; i<int(L.size()); i++){
-        modified_C.push_back(C[i] - (diffs[i] * 0.01));
-    }
-    
-    for(int i=0; i<int(L.size()); i++){
-        std::cout << "\nC" << i <<":"<< C[i] << std::endl;
-        std::cout << "mod_C" << i <<":"<< modified_C[i] << std::endl;
-    }
 
-    std::cout << "D" << std::endl; 
-    for(int i=0;i<int(dims[0].size());i++){
-        for (int j=0;j<int(dims.size());j++){
-            std::cout << dims[i][j] << " ";
-        }
-        std::cout << "\n" << std::endl;
-    }
-    std::vector<std::vector<float>> DT = transpose(dims);
-    std::cout << "DT" << std::endl; 
-    for(int i=0;i<int(DT[0].size());i++){
-        for (int j=0; j<int(DT.size()) ;j++){
-            std::cout << DT[i][j] << " ";
-        }
-        std::cout << "\n" << std::endl;
-    }
+    MatrixXd ATA = dims.transpose() * dims;
+    VectorXd ATb = dims.transpose() * diffs;
+    VectorXd diffs_sigma = ATA.inverse() * ATb;
+
+    VectorXd newset_dens = dens + diffs_sigma;
+
+    std::cout << "\nold denses:\n" << dens << std::endl;
+    std::cout << "\nnew denses:\n" << newset_dens << std::endl;
+    //std::vector<std::vector<float>> DT = transpose(dims);
 }
 
 float gen() {
@@ -72,40 +61,38 @@ float gen() {
     return result;
 }
 
-void initial_model(int n, std::string elements, std::vector<float> L) {
+void initial_model(int n, std::string elements, VectorXd L) {
     if (elements == "polygons") {
         std::cout << "making Talwani approach" << std::endl;
     }
     //--@n blocks
     //--blocks's dimension will be a constant
 
-    std::vector<float> calculated;
-    std::vector<float> densities;
-    std::vector<float> row; 
-    std::vector<std::vector<float>> dimensions;
+    int cols = int(L.size());
+    VectorXd calculated(cols);
+    VectorXd densities(n);
+    MatrixXd dimensions(n, cols);
 
     for (int j = 0; j<n; j++){
         float sigma = gen();
-        densities.push_back(sigma);
+        densities(j) = sigma;
     }
     float aux = 0.0;
     for (int i = 0; i< int(L.size());i++){
         //Block BLOCK(i); for object oriented
         for(int j = 0; j < n; j++) {
-            float dim = dimension(i,j);
-            row.push_back(dim);
-            float effect = G * densities[j] * dim;
+            float d = dimension(i,j);
+            float effect = G * densities[j] * d;
+            dimensions(i,j) = d;
             aux = effect + aux;
         }
-        dimensions.push_back(row);
-        row.clear();
-        calculated.push_back(aux);
+        calculated(i) = aux;
         aux = 0.0;
     }
-    for(float each:calculated){
-        std::cout << "effect ->" << each << std::endl;
-    }
-    std::cout << "\n\n" << std::endl;
+
+    //std::cout << "Effects\n" << calculated << std::endl;
+
+    //std::cout << "\n\n" << std::endl;
     least_squares(L, calculated, dimensions, densities);
 }
 
