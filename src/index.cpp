@@ -20,6 +20,8 @@ int main () {
     VectorXd L(10);
     L << 1e-5, 1.5e-5, 1.7e-5, 1.0e-5, 1.44e-5, 1.033e-5, 1.1e-5, 1.71e-5, 1.2e-5, 1.17e-5;
     initial_model(10, elements, L);
+
+
     return 0;
 }
 

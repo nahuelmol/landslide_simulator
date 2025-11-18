@@ -14,6 +14,7 @@ void build_stack(int n) {
 
     Stack ST(n, delta);
     Polygon P(c);
-    P.set_corners();
+    //here is only one single z values, I must add the set of z values
+    P.set_corners(5.0);
     ST.add_polygon(P);                      
 }

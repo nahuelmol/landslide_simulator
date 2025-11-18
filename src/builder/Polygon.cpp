@@ -2,6 +2,7 @@
 #include <Eigen/Dense>
 #include <iostream>
 #include "Polygon.h"
+#include "body.h"
 
 using Eigen::MatrixXd;
 
@@ -12,8 +13,10 @@ Polygon::Polygon(int c) {
     this->corners = m;
 }
 
-void Polygon::set_corners(){
-    std::cout << "here I should set corners (its coordinates)" << std::endl;
+void Polygon::set_corners(int z){
+    std::cout << "setting corners coordinates here.. " << std::endl;
+    this->z = z;
+    this->corners = body_builder(z, this->ncorners); 
 }
 
 MatrixXd Polygon::get_corners() {

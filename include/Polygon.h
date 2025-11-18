@@ -13,7 +13,7 @@ public:
     MatrixXd corners;
 
     Polygon(int c);
-    void set_corners();
+    void set_corners(int z);
     MatrixXd get_corners();
 };
 
