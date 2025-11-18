@@ -48,11 +48,14 @@ void least_squares(VectorXd L, VectorXd C, MatrixXd dims, VectorXd dens) {
     VectorXd ATb = dims.transpose() * diffs;
     VectorXd diffs_sigma = ATA.inverse() * ATb;
 
+    VectorXd x = dims.colPivHouseholderQr().solve(diffs);
+
     VectorXd newset_dens = dens + diffs_sigma;
+    VectorXd new_x = dens + x;
 
     std::cout << "\nold denses:\n" << dens << std::endl;
     std::cout << "\nnew denses:\n" << newset_dens << std::endl;
-    //std::vector<std::vector<float>> DT = transpose(dims);
+    std::cout << "\nnew_x:\n" << new_x << std::endl;
 }
 
 float gen() {
@@ -94,9 +97,6 @@ void initial_model(int n, std::string elements, VectorXd L) {
         aux = 0.0;
     }
 
-    //std::cout << "Effects\n" << calculated << std::endl;
-
-    //std::cout << "\n\n" << std::endl;
     least_squares(L, calculated, dimensions, densities);
 }
 
