@@ -8,12 +8,14 @@ using Eigen::MatrixXd;
 
 class Polygon {
 public:
-    int z = 0;
+    float z = 0;
     int ncorners = 0;
+    float phi = 0.0;
     MatrixXd corners;
 
     Polygon(int c);
-    void set_corners(int z);
+    void set_corners(float z);
+    void set_phi();
     MatrixXd get_corners();
 };
 

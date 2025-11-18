@@ -48,14 +48,7 @@ void least_squares(VectorXd L, VectorXd C, MatrixXd dims, VectorXd dens) {
     VectorXd ATb = dims.transpose() * diffs;
     VectorXd diffs_sigma = ATA.inverse() * ATb;
 
-    VectorXd x = dims.colPivHouseholderQr().solve(diffs);
-
     VectorXd newset_dens = dens + diffs_sigma;
-    VectorXd new_x = dens + x;
-
-    std::cout << "\nold denses:\n" << dens << std::endl;
-    std::cout << "\nnew denses:\n" << newset_dens << std::endl;
-    std::cout << "\nnew_x:\n" << new_x << std::endl;
 }
 
 float gen() {
@@ -72,8 +65,6 @@ void initial_model(int n, std::string elements, VectorXd L) {
     } else if (elements == "prisms") {
         std::cout << "making prisms approach" << std::endl;
     }
-    //--@n blocks
-    //--blocks's dimension will be a constant
 
     int cols = int(L.size());
     VectorXd calculated(cols);

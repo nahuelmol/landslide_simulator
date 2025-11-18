@@ -4,17 +4,10 @@
 
 using Eigen::MatrixXd;
 
-const double MY_PI = 3.14159265358979323846;
-
-MatrixXd body_builder(int z, int c) {
+MatrixXd body_builder(float z, int c) {
     double a = 10.0;
     double b = 6.0;
     double z_top = -2.5;
-
-    auto inside = [&](double x, double y, double z)->bool {
-        double v = (x*x + y*y) / (b*b) + ((z-z_top)*(z-z_top)) / (a*a);
-        return v <= 1.0;
-    };
 
     float t = 1.0 - ((z-z_top)*(z-z_top)) / (a*a);
     float r = b * std::sqrt(t);
