@@ -6,12 +6,13 @@
 
 class Stack {
 public:
-    std::vector<Polygon> Polygons;
+    std::vector<float> polygons;
     int n;
     float delta;
+    float z_top;
 
-    Stack(int n, float delta);
-    void add_polygon(Polygon P);
+    Stack(int n, float delta, float z_top);
+    float add_polygon(int i);
     Polygon get_polygon(int i);
 };
 

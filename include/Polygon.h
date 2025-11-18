@@ -3,6 +3,7 @@
 #define POLYGON_H
 
 #include <Eigen/Dense>
+#include "body.h"
 
 using Eigen::MatrixXd;
 
@@ -14,7 +15,7 @@ public:
     MatrixXd corners;
 
     Polygon(int c);
-    void set_corners(float z);
+    void set_corners(Body* BODY);
     void set_phi();
     MatrixXd get_corners();
 };

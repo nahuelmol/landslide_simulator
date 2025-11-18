@@ -1,6 +1,13 @@
 #ifndef BODY_H
 #define BODY_H
 
-MatrixXd body_builder(float z, int c);
+class Body {
+public:
+    float a;
+    float b;
+    float longitude;
+    float z_top;
+    Body(float a, float b, float z_top);
+};
 
 #endif //BODY_H

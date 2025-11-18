@@ -14,10 +14,20 @@ Polygon::Polygon(int c) {
     this->corners = m;
 }
 
-void Polygon::set_corners(float z){
+void Polygon::set_corners(Body* BODY){
     std::cout << "setting corners coordinates here.. " << std::endl;
-    this->z = z;
-    this->corners = body_builder(z, this->ncorners); 
+
+    float t = 1.0 - (std::pow((this->z)-(BODY->z_top),2)) / (std::pow(BODY->a,2));
+    float r = (BODY->b) * std::sqrt(t);
+    float ang = 360.0/(this->ncorners);
+
+    MatrixXd corners(this->ncorners,2);
+    for(int i=0; i<(this->ncorners); i++){
+        corners(i,0) = r * std::sin(i*ang);
+        corners(i,1) = r * std::cos(i*ang);
+    }
+
+    this->corners = corners;
 }
 
 void Polygon::set_phi() {

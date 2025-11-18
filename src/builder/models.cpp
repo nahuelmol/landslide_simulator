@@ -61,7 +61,7 @@ float gen() {
 void initial_model(int n, std::string elements, VectorXd L) {
     if (elements == "polygons") {
         std::cout << "making Talwani approach" << std::endl;
-        build_stack(n);
+        build_stack(4);
     } else if (elements == "prisms") {
         std::cout << "making prisms approach" << std::endl;
     }
