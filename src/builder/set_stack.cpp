@@ -16,17 +16,17 @@ void build_stack(int n) {
     std::cin >> z;
     */
 
-    std::cout << "hellow" << std::endl;
     Body* BODY = new Body(10.0, 6.0, -2.5f);
     float delta = (BODY->longitude)/(n+2);
     Stack* ST = new Stack(n, delta, -2.5);
-    for(int i;i<n;i++){
+
+    for(int i=0;i<n;i++){
         Polygon* P = new Polygon(c);
-        float z = ST->add_polygon(i);
-        P->z = z;
+        ST->add_polygon(P, i);
         P->set_corners(BODY);
         P->set_phi();
-        std::cout << "PHI:" << P->phi << std::endl;
+        ST->add_phi(P->phi, i);
     }
+    std::cout << "PHI:\n" << ST->PHI << std::endl;
     //here is only one single z values, I must add the set of z values
 }
