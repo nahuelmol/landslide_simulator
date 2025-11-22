@@ -13,13 +13,22 @@ The main obective are:
 
 ### Landslides
 
-I must simulate the flow of a landslide, being as it acts as a fluid due to earthquake-induced liquefaction, and precipitation floods that is retained by the talud which has a that capacity (characteristic of the piroclastic filled area). 
+I must simulate the flow of a landslide, being as it acts as a fluid due to earthquake-induced liquefaction, and precipitation floods that is retained by the talud which has that capacity (characteristic of the piroclastic filled area). 
 
-The first approach will be the finite element, discretizing the body of the unstable part of the talud as little pieces where each one moves following motion equations.
+There are different approaches for implementing the simulation, from two viewpoints specifically; the Eulerian and the Lagrangian. Both follow the Navier Stokes equation of motions but differ on the perspectives.
 
-And important step is to map the site where the talud fails and above that, represent the motion of that fluid (failed talud). It could be done with simple maps from above.
+#### Eulerian viewpoint
+This is a mesh-based method that assigns motion properties to the particles depending on their spatial location. The velocity field changes varies in time at an specific point.
 
-Other complext aproach for modeling fluids will be considered.
+#### Lagrangian viewpoint
+
+This is the choseen approach. A mesh-free method which follows the behavior of each particle and consider how its properties varies along the way. Studying earquake produced landslides, there's a crucial properties that varies in time, the G module. At applying frequencies, the behavior of the soil changes from elastic to viscoelastic and finally, if the frequency is the fundamental, to plastic transforming into a fluid. The G comes to the limit, the resistance is broken and the soil faouls, particles are colapsed, porous pressure evolves along this evolution raching its peak.
+
+The SPH (Smoothed Particle Hydrodinamics) is the method to be implemented.
+Mohr-Coulomb constitutive model is also considered to represent deformation-stress relation and the rupture point.
+
+Kernel functions will be explored for choosing the best option.
+*  Cubic-Spline-Kernel is the first option.
 
 ### Gravity anomalies
 
