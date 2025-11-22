@@ -27,4 +27,16 @@ An additional goal is to put in practice the forward method at modeling gravity 
 
 Finding the Jacobian matrix is crucial since it is aware of the variations in gravity per unit of change in density between prisms and observation points. There is where the equation provided by Plouff (Blakely 187) enter the scene and relates defining the mentioned relation in terms of source's dimensions considering fixed density per subsource (being a prism in that case).
 
+#### Implementation of Talwani forward modeling
+
+A polygon class and a Stack class are created. Each polygon will create its own G(z) value and eventually the \phi value asociated. The Stack to wich polygons are linked to will get polygon's phi values to construct the PHI matrix. This is the Jacobian matrix that relates gravity with density, needed for forward and adjustment by applying least-squares.
+
+A first aproximation is the case of a single observation point located at the origin of the coordinate system. This simplifies the formulas that calculate the mentioned parameters. This points has an asociated Jacobian matrix, of a single column, indeed it's a vector with a size of the amount of polygons that compounds the Stack.
+
+When multiple observation are considered, the Jacobian will get the shape of multidimensional matrix with more than one column depending on the amount of observations.
+
+G(z) are obtained by the superposition of the effects that each side has on the origin. Each attraction is comnined to form a single one as if the effect is produced by the polygon's boundary.
+
+
+
 
