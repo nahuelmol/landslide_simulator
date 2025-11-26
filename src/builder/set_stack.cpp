@@ -4,7 +4,7 @@
 #include "Stack.h"
 #include "Body.h"
 
-void build_stack(int n) {
+Stack* build_stack(int n) {
     //--@n is amount of polygons
     int c = 4;
 
@@ -19,5 +19,5 @@ void build_stack(int n) {
         P->set_phi();
         ST->add_phi(P->phi, i);
     }
-    std::cout << "PHI:\n" << ST->PHI << std::endl;
+    return ST;
 }

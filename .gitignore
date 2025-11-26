@@ -3,7 +3,10 @@
 *.un~
 *.bat~
 *.cpp~
+*.txt
+*.xlsx
 
 src/*.o
 src/builder/*.o
 include/Eigen
+

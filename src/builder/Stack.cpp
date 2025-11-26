@@ -12,14 +12,18 @@ Stack::Stack(int n, float delta, float z_top) {
     this->delta = delta;
     this->z_top = z_top;
 
+    (this->locations).conservativeResize(n);
+
     MatrixXd m(n,1);
-    std::cout << m << std::endl;
     this->PHI = m;
 }
 
 void Stack::add_polygon(Polygon* P, int i){
     float z = (i * (this->delta)) + (this->z_top);
-    this->locations.push_back(z);
+
+    std::cout << "z:" << z << std::endl;
+    std::cout << "i:" << i << std::endl;
+    (this->locations)(i) = z;
     P->z = z;
 }
 

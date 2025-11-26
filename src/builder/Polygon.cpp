@@ -15,8 +15,6 @@ Polygon::Polygon(int c) {
 }
 
 void Polygon::set_corners(Body* BODY){
-    std::cout << "setting corners coordinates here.. " << std::endl;
-
     float t = 1.0 - (std::pow((this->z)-(BODY->z_top),2)) / (std::pow(BODY->a,2));
     float r = (BODY->b) * std::sqrt(t);
     float ang = 360.0/(this->ncorners);
@@ -42,7 +40,6 @@ void Polygon::set_phi() {
         float SIGMA = sigma_set(results.first, results.second, this->z, corners.row(i));
         float SIGMA_next = sigma_set(results.first, results.second, this->z, corners.row(m));
         float result = (std::atan(SIGMA_next) - std::atan(SIGMA));
-        //std::cout << "corners: " << i << " -> " << m << std::endl;
         aux = aux + result;
     }
     this->phi = aux;

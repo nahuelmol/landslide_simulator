@@ -58,23 +58,31 @@ float gen() {
     return result;
 }
 
-void initial_model(int n, std::string elements, VectorXd L) {
+void initial_model(std::string elements, MatrixXd Data) {
+    Stack* ST;
     if (elements == "polygons") {
-        std::cout << "making Talwani approach" << std::endl;
-        build_stack(4);
+        std::cout << "\n----Talwani----\n" << std::endl;
+        ST = build_stack(4);
     } else if (elements == "prisms") {
         std::cout << "making prisms approach" << std::endl;
     }
 
-    int cols = int(L.size());
-    VectorXd calculated(cols);
-    VectorXd densities(n);
-    MatrixXd dimensions(n, cols);
+    //I must set n as ncorners
 
-    for (int j = 0; j<n; j++){
+    int L = int(Data.col(2).size());
+    VectorXd calculated(L);
+    VectorXd densities(ST->n);
+    MatrixXd dimensions(ST->n, L);
+
+    for (int j = 0; j<(ST->n); j++){
         float sigma = gen();
         densities(j) = sigma;
     }
+
+    std::cout << "\nDensities:\n" << densities << std::endl;
+    std::cout << "\nLocations:\n" << ST->locations << std::endl;
+    std::cout << "PHI:\n" << ST->PHI << std::endl;
+    /*
     float aux = 0.0;
     for (int i = 0; i< int(L.size());i++){
         //Block BLOCK(i); for object oriented
@@ -89,6 +97,7 @@ void initial_model(int n, std::string elements, VectorXd L) {
     }
 
     least_squares(L, calculated, dimensions, densities);
+    */
 }
 
 

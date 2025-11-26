@@ -6,10 +6,11 @@
 #include <Eigen/Dense>
 
 using Eigen::MatrixXd;
+using Eigen::VectorXd;
 
 class Stack {
 public:
-    std::vector<float> locations;
+    VectorXd locations;
     std::vector<Polygon*> polygons;
     int n;
     float delta;
