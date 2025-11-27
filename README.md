@@ -44,8 +44,17 @@ A first aproximation is the case of a single observation point located at the or
 
 When multiple observation are considered, the Jacobian will get the shape of multidimensional matrix with more than one column depending on the amount of observations.
 
-G(z) are obtained by the superposition of the effects that each side has on the origin. Each attraction is comnined to form a single one as if the effect is produced by the polygon's boundary.
+G(z) are obtained by the superposition of the effects that each side of the polygon has on the origin. Each attraction is combined to form a single one as if the effect is produced by the polygon's boundary. The integral is then defined as follows (Blakely, Cambridge University Press 1996):
 
+<img width="827" height="119" alt="image" src="https://github.com/user-attachments/assets/a6617bc8-75cc-4e49-9f4c-090ae8eebad4" />
 
+For simplicity, x prime is defined in function of the y'. This way, integration has to be done along one single axis, and are introduced two more constants per side, the slope of the segment and its bias.
 
+<img width="177" height="43" alt="image" src="https://github.com/user-attachments/assets/ffa20ef3-9ccf-4496-a46c-e3f602cea606" />
+
+where:
+
+<img width="317" height="229" alt="image" src="https://github.com/user-attachments/assets/753f83e5-9924-4ad2-a881-15dc90cb34d6" />
+
+The follwing is to replace these definitions into G(z') and to calculate the function's primitive.
 
