@@ -16,7 +16,7 @@ public:
 
     Polygon(int c);
     void set_corners(Body* BODY);
-    void set_phi();
+    void set_phi(MatrixXd Data);
     MatrixXd get_corners();
 };
 

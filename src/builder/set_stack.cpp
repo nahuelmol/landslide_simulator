@@ -4,7 +4,11 @@
 #include "Stack.h"
 #include "Body.h"
 
-Stack* build_stack(int n) {
+#include "Eigen/Dense"
+
+using Eigen::MatrixXd;
+
+Stack* build_stack(int n, MatrixXd Data) {
     //--@n is amount of polygons
     int c = 4;
 
@@ -16,7 +20,7 @@ Stack* build_stack(int n) {
         Polygon* P = new Polygon(c);
         ST->add_polygon(P, i);
         P->set_corners(BODY);
-        P->set_phi();
+        P->set_phi(Data);
         ST->add_phi(P->phi, i);
     }
     return ST;

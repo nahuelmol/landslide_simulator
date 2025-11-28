@@ -28,7 +28,7 @@ void Polygon::set_corners(Body* BODY){
     this->corners = corners;
 }
 
-void Polygon::set_phi() {
+void Polygon::set_phi(MatrixXd Data) {
     float aux = 0.0;
     int m = 0;
     for (int i=0;i<this->ncorners;i++){

@@ -62,14 +62,12 @@ void initial_model(std::string elements, MatrixXd Data) {
     Stack* ST;
     if (elements == "polygons") {
         std::cout << "\n----Talwani----\n" << std::endl;
-        ST = build_stack(4);
+        ST = build_stack(4, Data);
     } else if (elements == "prisms") {
         std::cout << "making prisms approach" << std::endl;
     }
 
-    //I must set n as ncorners
-
-    int L = int(Data.col(2).size());
+    int L = int(Data.col(3).size());
     VectorXd calculated(L);
     VectorXd densities(ST->n);
     MatrixXd dimensions(ST->n, L);
