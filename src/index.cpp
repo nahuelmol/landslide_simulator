@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <math.h>
 #include "models.h"
-#include "fluid.h"
 #include <Eigen/Dense>
 
 using Eigen::VectorXd;
