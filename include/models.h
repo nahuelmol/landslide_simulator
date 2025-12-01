@@ -12,6 +12,6 @@ using Eigen::MatrixXd;
 float dimension(int i, int j);
 float gen();
 void initial_model(std::string elements, MatrixXd Data);
-void least_squares(VectorXd L, VectorXd C);
+void least_squares(MatrixXd Data, MatrixXd dims, VectorXd dens);
 
 #endif //MODELS_H

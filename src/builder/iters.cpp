@@ -20,3 +20,10 @@ float sigma_set(float alpha, float beta, float z, VectorXd corner){
     return result;
 }
 
+float F_set(float A, float B, float C, float delta, VectorXd corner) {
+    float inside = A * std::pow(corner(1),2) + B * corner(1) + C;
+    float result = (2 * (2 * A * corner(1) + B)) / (delta * std::sqrt(inside));
+
+    return result;
+}
+

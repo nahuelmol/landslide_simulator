@@ -23,32 +23,29 @@ float dimension(int i, int j){
     return result;
 }
 
-void least_squares(VectorXd L, VectorXd C, MatrixXd dims, VectorXd dens) {
+void least_squares(MatrixXd Data, MatrixXd PHI, VectorXd dens) {
     //comparing
-    VectorXd LSE(L.size());
+    VectorXd g_c = PHI * dens;
+    VectorXd diffs = Data.col(3) - g_c;
+
+
+    MatrixXd ATA = PHI.transpose() * PHI;
+    VectorXd ATb = PHI.transpose() * diffs;
+    VectorXd diffs_sigma = ATA.inverse() * ATb;
+    VectorXd new_dens = dens + diffs_sigma;
+
+    std::cout << "\nATA:\n" << ATA << std::endl;
+    std::cout << "\nATb:\n" << ATb << std::endl;
+    std::cout << "\ndiffs sigma:\n" << diffs_sigma << std::endl;
+
     float BIAS_SSE = 0.5;
     float SSE = 0.0;
-    VectorXd modified_C(L.size());
-    VectorXd diffs(L.size());
-    for(int i = 0; i < int(L.size()); i++){
-        float diff = L[i] - C[i];
-        diffs(i) = diff;
-        float E2 = std::pow(diff, 2);
-        SSE = SSE + E2;
-        LSE(i) = E2;
-    }
 
     if(SSE < BIAS_SSE) {
         std::cout << "SSE:" << SSE << std::endl;
         std::cout << "BIAS_SSE:" << BIAS_SSE << std::endl;
     }
-
-
-    MatrixXd ATA = dims.transpose() * dims;
-    VectorXd ATb = dims.transpose() * diffs;
-    VectorXd diffs_sigma = ATA.inverse() * ATb;
-
-    VectorXd newset_dens = dens + diffs_sigma;
+    std::cout << "\nnewset:" << new_dens << std::endl;
 }
 
 float gen() {
@@ -78,24 +75,9 @@ void initial_model(std::string elements, MatrixXd Data) {
     }
 
     std::cout << "\nDensities:\n" << densities << std::endl;
-    std::cout << "\nLocations:\n" << ST->locations << std::endl;
-    std::cout << "PHI:\n" << ST->PHI << std::endl;
-    /*
-    float aux = 0.0;
-    for (int i = 0; i< int(L.size());i++){
-        //Block BLOCK(i); for object oriented
-        for(int j = 0; j < n; j++) {
-            float d = dimension(i,j);
-            float effect = G * densities[j] * d;
-            dimensions(i,j) = d;
-            aux = effect + aux;
-        }
-        calculated(i) = aux;
-        aux = 0.0;
-    }
+    //std::cout << "\nLocations:\n" << ST->locations << std::endl;
 
-    least_squares(L, calculated, dimensions, densities);
-    */
+    least_squares(Data, ST->PHI, densities);
 }
 
 

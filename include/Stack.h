@@ -17,10 +17,10 @@ public:
     float z_top;
     MatrixXd PHI;
 
-    Stack(int n, float delta, float z_top);
+    Stack(int n, int L, float delta, float z_top);
     void add_polygon(Polygon* P,int i);
     Polygon get_polygon(int i);
-    void add_phi(float phi_m, int i);
+    void add_phi(float phi_m, int i, int j, float z, float Pz);
 };
 
 #endif //STACK_H
