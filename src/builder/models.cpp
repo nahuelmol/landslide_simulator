@@ -23,25 +23,35 @@ float dimension(int i, int j){
     return result;
 }
 
-void least_squares(MatrixXd Data, MatrixXd PHI, VectorXd dens) {
+void least_squares(MatrixXd Data, MatrixXd PHI, VectorXd dens, float alpha, float RMS_rel_prev) {
     //comparing
     VectorXd g_c = PHI * dens;
-    std::cout << "\ng_c:\n" << g_c << std::endl;
+    //std::cout << "\ng_c:\n" << g_c << std::endl;
     VectorXd diffs = Data.col(3) - g_c;
+
+    double RMS = std::sqrt(diffs.squaredNorm() / diffs.size());
+    double RMS_rel = RMS / Data.col(3).norm();
+    std::cout << "\nRMS_rel:\n" << RMS_rel << std::endl;
 
     MatrixXd ATA = PHI.transpose() * PHI;
     VectorXd ATb = PHI.transpose() * diffs;
     VectorXd diffs_sigma = ATA.inverse() * ATb;
-    VectorXd new_dens = dens + diffs_sigma;
+    VectorXd new_dens = dens + (alpha) * diffs_sigma;
 
-    float BIAS_SSE = 0.5;
-    float SSE = 0.0;
+    float SSE = 0.05;
 
-    if(SSE < BIAS_SSE) {
-        std::cout << "\nSSE:" << SSE << std::endl;
-        std::cout << "BIAS_SSE:" << BIAS_SSE << std::endl;
+    if (RMS_rel < SSE){
+        std::cout << "is okey" << std::endl;
+        std::cout << "\nDensities:\n" << new_dens << std::endl;
+    } else {
+        if (RMS_rel < RMS_rel_prev) {
+            alpha = alpha;
+        } else {
+            alpha = alpha / 2;
+        }
+        std::cout << "\nalpha:\n" << alpha << std::endl;
+        least_squares(Data, PHI, new_dens, alpha, RMS_rel);
     }
-    std::cout << "\nnewset:\n" << new_dens << std::endl;
 }
 
 float gen() {
@@ -70,10 +80,10 @@ void initial_model(std::string elements, MatrixXd Data) {
         densities(j) = sigma;
     }
 
-    std::cout << "\nDensities:\n" << densities << std::endl;
-    std::cout << "\nLocations:\n" << ST->locations << std::endl;
+    //std::cout << "\nDensities:\n" << densities << std::endl;
+    //std::cout << "\nLocations:\n" << ST->locations << std::endl;
 
-    least_squares(Data, ST->PHI, densities);
+    least_squares(Data, ST->PHI, densities, 1.0, 1.0);
 }
 
 
