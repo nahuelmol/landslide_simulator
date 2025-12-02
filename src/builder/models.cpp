@@ -26,26 +26,22 @@ float dimension(int i, int j){
 void least_squares(MatrixXd Data, MatrixXd PHI, VectorXd dens) {
     //comparing
     VectorXd g_c = PHI * dens;
+    std::cout << "\ng_c:\n" << g_c << std::endl;
     VectorXd diffs = Data.col(3) - g_c;
-
 
     MatrixXd ATA = PHI.transpose() * PHI;
     VectorXd ATb = PHI.transpose() * diffs;
     VectorXd diffs_sigma = ATA.inverse() * ATb;
     VectorXd new_dens = dens + diffs_sigma;
 
-    std::cout << "\nATA:\n" << ATA << std::endl;
-    std::cout << "\nATb:\n" << ATb << std::endl;
-    std::cout << "\ndiffs sigma:\n" << diffs_sigma << std::endl;
-
     float BIAS_SSE = 0.5;
     float SSE = 0.0;
 
     if(SSE < BIAS_SSE) {
-        std::cout << "SSE:" << SSE << std::endl;
+        std::cout << "\nSSE:" << SSE << std::endl;
         std::cout << "BIAS_SSE:" << BIAS_SSE << std::endl;
     }
-    std::cout << "\nnewset:" << new_dens << std::endl;
+    std::cout << "\nnewset:\n" << new_dens << std::endl;
 }
 
 float gen() {
@@ -75,7 +71,7 @@ void initial_model(std::string elements, MatrixXd Data) {
     }
 
     std::cout << "\nDensities:\n" << densities << std::endl;
-    //std::cout << "\nLocations:\n" << ST->locations << std::endl;
+    std::cout << "\nLocations:\n" << ST->locations << std::endl;
 
     least_squares(Data, ST->PHI, densities);
 }

@@ -20,7 +20,7 @@ Stack::Stack(int n, int L, float delta, float z_top) {
 }
 
 void Stack::add_polygon(Polygon* P, int i){
-    float z = (i * (this->delta)) + (this->z_top);
+    float z = ((i+1) * (this->delta)) + (this->z_top);
 
     (this->locations)(i) = z;
     P->z = z;

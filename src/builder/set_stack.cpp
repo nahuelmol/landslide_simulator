@@ -13,9 +13,9 @@ Stack* build_stack(int n, MatrixXd Data) {
     int c = 4;
 
     int L = Data.rows();
-    Body* BODY = new Body(10.0, 6.0, -2.5f);
-    float delta = (BODY->longitude)/(n+2);
-    Stack* ST = new Stack(n, L, delta, -2.5);
+    Body* BODY = new Body(10.0, 6.0, 2.5f);
+    float delta = (BODY->longitude)/(n+1);
+    Stack* ST = new Stack(n, L, delta, 2.5);
 
     for(int j=0; j<L;j++){
         for(int i=0;i<n;i++){
