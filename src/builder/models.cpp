@@ -23,7 +23,7 @@ float dimension(int i, int j){
     return result;
 }
 
-void least_squares(MatrixXd Data, MatrixXd PHI, VectorXd dens, float alpha, float RMS_rel_prev) {
+void least_squares(MatrixXd Data, MatrixXd PHI, VectorXd dens, float prev_alpha, float RMS_rel_prev) {
     //comparing
     VectorXd g_c = PHI * dens;
     //std::cout << "\ng_c:\n" << g_c << std::endl;
@@ -31,25 +31,28 @@ void least_squares(MatrixXd Data, MatrixXd PHI, VectorXd dens, float alpha, floa
 
     double RMS = std::sqrt(diffs.squaredNorm() / diffs.size());
     double RMS_rel = RMS / Data.col(3).norm();
+    float SSE = 0.06;
+    float alpha = 0.0;
+    //std::cout << "\nRMS:\n" << RMS << std::endl;
+    //std::cout << "\nRMS_rel_prev:\n" << RMS_rel_prev << std::endl;
     std::cout << "\nRMS_rel:\n" << RMS_rel << std::endl;
-
-    MatrixXd ATA = PHI.transpose() * PHI;
-    VectorXd ATb = PHI.transpose() * diffs;
-    VectorXd diffs_sigma = ATA.inverse() * ATb;
-    VectorXd new_dens = dens + (alpha) * diffs_sigma;
-
-    float SSE = 0.05;
 
     if (RMS_rel < SSE){
         std::cout << "is okey" << std::endl;
-        std::cout << "\nDensities:\n" << new_dens << std::endl;
+        std::cout << "\nDensities:\n" << dens << std::endl;
     } else {
-        if (RMS_rel < RMS_rel_prev) {
-            alpha = alpha;
-        } else {
-            alpha = alpha / 2;
+        if(float(RMS_rel) == float(RMS_rel_prev)){
+            //std::cout << "\nSAME\n" << std::endl;
+            alpha = prev_alpha * 0.99;
+        } else if(float(RMS_rel < float(RMS_rel_prev))){
+            alpha = prev_alpha * 0.99;
         }
-        std::cout << "\nalpha:\n" << alpha << std::endl;
+        MatrixXd ATA = PHI.transpose() * PHI;
+        VectorXd ATb = PHI.transpose() * diffs;
+        VectorXd diffs_sigma = ATA.inverse() * ATb;
+        VectorXd new_dens = dens + (alpha) * diffs_sigma;
+
+        //std::cout << "\nalpha:\n" << alpha << std::endl;
         least_squares(Data, PHI, new_dens, alpha, RMS_rel);
     }
 }
@@ -83,7 +86,7 @@ void initial_model(std::string elements, MatrixXd Data) {
     //std::cout << "\nDensities:\n" << densities << std::endl;
     //std::cout << "\nLocations:\n" << ST->locations << std::endl;
 
-    least_squares(Data, ST->PHI, densities, 1.0, 1.0);
+    least_squares(Data, ST->PHI, densities, 0.1, 1.0);
 }
 
 
