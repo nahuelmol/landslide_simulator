@@ -82,6 +82,58 @@ Finally, for the whole boundary, accumulating every side:
 
 This procces must be repeated for each polygon. Finally, each observation will have n-polygons effects, n rows. Considering L observations, G will be a matrix of nxL dimensions. The last step is to build the Jacobian matrix from this G matrix, multiplying for \gamma and (z-z') and delta z'. The ideal case is to resolve the integral going along the whole initial model. However, discrete polygons can be take into account.
 
+#### Least Squares
+
+The linear relation between observed data changes and parameters variation is represented as follows:
+
+<img width="98" height="42" alt="image" src="https://github.com/user-attachments/assets/54e5a620-26d8-4a72-888b-d7b710f8d653" />
+
+Where A has multiple meanings depending on the perspective. Phyisically, it's the sensitivity matrix. In calculis, it's the derivative of the observed data with repect to a source's parameter. In potential theory it is deeply related ot the Green's functions, thorughout U(x), the solution to the Poisson's differential equation.
+
+This definition is used when the least square error algorithm is applied, defining the squared error first..
+
+<img width="253" height="87" alt="image" src="https://github.com/user-attachments/assets/8eecb794-b8f0-4e9f-b12e-c5f8bb8747e1" />
+
+and setting its derivative to zero.
+
+<img width="450" height="135" alt="image" src="https://github.com/user-attachments/assets/ea3f2b37-303c-4ee8-b5a2-c95a87625c11" />
+
+Considering c as a vector and B equal to the product of A with its transpose.
+
+<img width="283" height="63" alt="image" src="https://github.com/user-attachments/assets/49dbbd83-5e8f-42a9-b8aa-a32258c1f412" />
+
+B is simetric then..
+
+<img width="161" height="42" alt="image" src="https://github.com/user-attachments/assets/82162811-5c46-4040-ae54-154aad23667f" />
+
+Then the product is also simetric
+
+<img width="297" height="140" alt="image" src="https://github.com/user-attachments/assets/1d345fbd-8516-48b3-8e2c-396cd457cb91" />
+
+Finally,
+
+<img width="410" height="96" alt="image" src="https://github.com/user-attachments/assets/b83f5754-036e-41ac-9c47-aa49dde71fe3" />
+
+The product has invert and we get this
+
+<img width="202" height="50" alt="image" src="https://github.com/user-attachments/assets/984ba314-bd00-41df-b1bc-b15e4c249d62" />
+
+instead of using y and x, we can replace it with variations and control them to implement corrections per iteration.
+
+<img width="238" height="62" alt="image" src="https://github.com/user-attachments/assets/66cc8439-2108-4442-b2d4-5915acd6b689" />
+
+Corrections are aplied by adding displacments in x to the current set of x values.
+
+<img width="184" height="44" alt="image" src="https://github.com/user-attachments/assets/f2dabd5f-5dfd-408c-93d1-c98177a25dcd" />
+
+However, this application is not making any progress at all, because it is adding (or extracting if is negative) the same value to the set. I mean, it's the same displacement of the parameter corresponding to the same specific displacement in the observer data. Then it is just oscilating.
+
+A weight must be used \alpha that controls the step (it could be consider a vector being that is represents direcction and magnitud of the correction), which will vary per iteration and allows an additional degree of freedom. Then,
+
+<img width="209" height="59" alt="image" src="https://github.com/user-attachments/assets/5b207513-214a-4ef7-a6a2-a88bb3928241" />
+
+This way the correction converges until it founds an step that produces an oscilation, that is the limit of the algorithm. Soon, regularizations will be implemented to control the stability of the process, conditioning A.
+
 #### Adjustment
 
 I have stated a 0.06 RMS_rel limit. Below that, the model starts oscilating. Following, a plot with the evolution of the inital model untill it gets similar to the anomaly:
