@@ -2,8 +2,10 @@
 #include <iostream>
 #include <stdio.h>
 #include <math.h>
-#include "models.h"
 #include <Eigen/Dense>
+
+#include "models.h"
+#include "export.h"
 
 using Eigen::VectorXd;
 using Eigen::MatrixXd;
@@ -14,14 +16,15 @@ int main () {
     MatrixXd Data(10,4);
 
     for(int i=0;i < 10;i++){
-        Data(i,0) = float(i-4);
+        Data(i,0) = float(i);
         Data(i,1) = 0;
         Data(i,2) = 0;
     }
-
     
-    L << 1e-5, 1.5e-5, 1.7e-5, 1.0e-5, 1.44e-5, 1.033e-5, 1.1e-5, 1.71e-5, 1.2e-5, 1.17e-5;
+    L << 1e-5, 1.5e-5, 1.7e-5, 1.7e-5, 1.84e-5, 1.33e-5, 1.29e-5, 1.21e-5, 1.2e-5, 1.17e-5;
     Data.col(3) = L;
+    make_csv(Data.col(0));
+    add_csv(Data.col(3));
     //implement();
     initial_model(elements, Data);
 
