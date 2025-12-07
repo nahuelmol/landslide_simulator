@@ -27,9 +27,9 @@ int main () {
     make_csv(Data.col(0));
     add_csv(Data.col(3));
     //implement();
-    //initial_model(elements, Data);
+    initial_model(elements, Data);
 
-    plot();
+    plot("here.txt");
 
     return 0;
 }
