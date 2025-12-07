@@ -6,6 +6,7 @@
 
 #include "models.h"
 #include "export.h"
+#include "plotting.h"
 
 using Eigen::VectorXd;
 using Eigen::MatrixXd;
@@ -26,7 +27,9 @@ int main () {
     make_csv(Data.col(0));
     add_csv(Data.col(3));
     //implement();
-    initial_model(elements, Data);
+    //initial_model(elements, Data);
+
+    plot();
 
     return 0;
 }
