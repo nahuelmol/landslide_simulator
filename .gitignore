@@ -6,6 +6,8 @@
 *.txt
 *.xlsx
 *.png
+.gitignore
+env/
 
 src/*.o
 src/builder/*.o

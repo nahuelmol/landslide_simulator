@@ -4,25 +4,25 @@
 #include <math.h>
 #include <Eigen/Dense>
 #include <windows.h>
-#include <winuser.h>
+#include <commctrl.h>
+#include <stdio.h>
 
+#include "resource.h"
 #include "models.h"
 #include "export.h"
 #include "plotting.h"
-
-#ifndef UNICODE
-#define UNICODE
-#endif 
 
 using Eigen::VectorXd;
 using Eigen::MatrixXd;
 
 LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+HINSTANCE g_hInst;
 
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow) {
     const char CLASS_NAME[]  = "Sample Window Class";
     HWND hwnd;
     MSG msg;
+    g_hInst = hInstance;
 
     std::string elements = "polygons";
     VectorXd L(10);
@@ -73,8 +73,38 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine
     return 0;
 }
 
+
+INT_PTR CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam){
+    switch(msg){
+        case WM_COMMAND:
+            switch(LOWORD(wParam)){
+                case IDOK:
+                case IDCANCEL:
+                    EndDialog(hwnd, 0);
+                    return TRUE;
+            }
+            break;
+        case WM_CLOSE:
+            EndDialog(hwnd, 0);
+            return TRUE;
+    }
+    return FALSE;
+};
+
 LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
+        case WM_CREATE:
+            CreateWindow(
+                "BUTTON",
+                "Open Forward",
+                WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+                20,20,140,25,
+                hwnd,
+                (HMENU)ID_OPEN_DIALOG,
+                g_hInst,
+                NULL
+            );
+            break;
         case WM_DESTROY:
             PostQuitMessage(0);
             return 0;
@@ -87,7 +117,22 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
                 EndPaint(hwnd, &ps);
             }
-            return 0;
-        }
-        return DefWindowProc(hwnd, uMsg, wParam, lParam);
+        case WM_COMMAND:
+            switch(LOWORD(wParam)){
+                case ID_OPEN_DIALOG:
+                    std::cout << "hola" << std::endl;
+                    DialogBoxParam(
+                        g_hInst,
+                        MAKEINTRESOURCE(DLG_MAIN),
+                        hwnd,
+                        DlgProc,
+                        0
+                    );
+                    std::cout << "hola" << std::endl;
+                    break;
+            }
+            break;
+        return 0;
+   }
+   return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
