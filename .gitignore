@@ -5,6 +5,7 @@
 *.cpp~
 *.txt
 *.xlsx
+*.png
 
 src/*.o
 src/builder/*.o
