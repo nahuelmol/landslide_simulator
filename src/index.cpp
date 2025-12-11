@@ -24,22 +24,9 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine
     MSG msg;
     g_hInst = hInstance;
 
-    std::string elements = "polygons";
-    VectorXd L(10);
-    MatrixXd Data(10,4);
-
-    for(int i=0;i < 10;i++){
-        Data(i,0) = float(i);
-        Data(i,1) = 0;
-        Data(i,2) = 0;
-    }
-    
-    L << 1e-5, 1.5e-5, 1.7e-5, 1.7e-5, 1.84e-5, 1.33e-5, 1.29e-5, 1.21e-5, 1.2e-5, 1.17e-5;
-    Data.col(3) = L;
     //make_csv(Data.col(0));
     //add_csv(Data.col(3));
     //implement();
-    //initial_model(elements, Data);
     //plot("here.txt");
     
     WNDCLASS wc = {};
@@ -120,7 +107,16 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
         case WM_COMMAND:
             switch(LOWORD(wParam)){
                 case ID_OPEN_DIALOG:
-                    std::cout << "hola" << std::endl;
+                    std::string elements = "polygons";
+                    VectorXd L(10);
+                    MatrixXd Data(10,4);
+                    for(int i=0;i < 10;i++){
+                        Data(i,0) = float(i);
+                        Data(i,1) = 0;
+                        Data(i,2) = 0;
+                    }
+                    L << 1e-5, 1.5e-5, 1.7e-5, 1.7e-5, 1.84e-5, 1.33e-5, 1.29e-5, 1.21e-5, 1.2e-5, 1.17e-5;
+                    Data.col(3) = L;
                     DialogBoxParam(
                         g_hInst,
                         MAKEINTRESOURCE(DLG_MAIN),
@@ -128,7 +124,7 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
                         DlgProc,
                         0
                     );
-                    std::cout << "hola" << std::endl;
+                    initial_model(elements, Data);
                     break;
             }
             break;
