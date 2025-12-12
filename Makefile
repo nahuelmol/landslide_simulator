@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -Iinclude
+CXXFLAGS = -Wall -Iinclude -luser32
 CC = gcc
 SRC = $(shell find src -name "*.cpp")
 OBJ = $(SRC:.cpp=.o)

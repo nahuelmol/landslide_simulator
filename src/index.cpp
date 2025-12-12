@@ -4,6 +4,7 @@
 #include <math.h>
 #include <Eigen/Dense>
 #include <windows.h>
+#include <winuser.h>
 #include <wingdi.h>
 #include <commctrl.h>
 #include <stdio.h>
@@ -12,6 +13,7 @@
 #include "models.h"
 #include "export.h"
 #include "plotting.h"
+#include "errors.h"
 
 using Eigen::VectorXd;
 using Eigen::MatrixXd;
@@ -108,7 +110,7 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
                 "STATIC",
                 "Text",
                 WS_CHILD | WS_VISIBLE,
-                65, 20, 300, 25,
+                20, 360, 300, 25,
                 hwnd,
                 (HMENU)1002,
                 g_hInst,
@@ -149,10 +151,34 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
                         0
                     );*/
                     initial_model(elements, Data);
-                    HDC hdc = GetDC(hdraw);
-                    //Rectangle(hdc, 10,10,10,10);
-                    //SetWindowText(htext, "new text");
-                    ReleaseDC(hdraw, hdc);
+
+                    HWND parent = GetParent(htext);
+                    if(parent != hwnd) {
+                        std::cout << "err" << std::endl;
+                        if(htext == NULL) {
+                            std::cout << "double err" << std::endl;
+                        }
+                    }
+
+
+                    /*if(result!=0){
+                        std::cout << "correctly executed" << std::endl;
+                    } else {
+                        DWORD code = GetLastError();
+                        char buffer[256];
+                        FormatMessage(
+                            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                            NULL,
+                            code,
+                            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                            buffer,
+                            sizeof(buffer),
+                            NULL
+                        );
+                        std::cout << "uncorrectly executed: " << buffer << std::endl;
+                    }
+                    ReleaseDC(htext, hdc);
+                    */
                     break;
             }
             break;
