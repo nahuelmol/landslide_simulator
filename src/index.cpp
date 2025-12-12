@@ -4,6 +4,7 @@
 #include <math.h>
 #include <Eigen/Dense>
 #include <windows.h>
+#include <wingdi.h>
 #include <commctrl.h>
 #include <stdio.h>
 
@@ -43,7 +44,7 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine
         CLASS_NAME,
         "Learn to Program Windows",
         WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT, 480, 240,
+        CW_USEDEFAULT, CW_USEDEFAULT, 780, 540,
         NULL, NULL, hInstance, NULL);
 
     if (hwnd == NULL) {
@@ -79,6 +80,8 @@ INT_PTR CALLBACK DlgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam){
 };
 
 LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    HWND hdraw;
+    HWND htext;
     switch (uMsg) {
         case WM_CREATE:
             CreateWindow(
@@ -88,6 +91,26 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
                 20,20,140,25,
                 hwnd,
                 (HMENU)ID_OPEN_DIALOG,
+                g_hInst,
+                NULL
+            );
+            hdraw = CreateWindow(
+                "STATIC",
+                NULL,
+                WS_CHILD | WS_VISIBLE | SS_BLACKFRAME,
+                20, 50, 400, 300,
+                hwnd,
+                (HMENU)1001,
+                g_hInst,
+                NULL
+            );
+            htext = CreateWindow(
+                "STATIC",
+                "Text",
+                WS_CHILD | WS_VISIBLE,
+                65, 20, 300, 25,
+                hwnd,
+                (HMENU)1002,
                 g_hInst,
                 NULL
             );
@@ -117,14 +140,19 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
                     }
                     L << 1e-5, 1.5e-5, 1.7e-5, 1.7e-5, 1.84e-5, 1.33e-5, 1.29e-5, 1.21e-5, 1.2e-5, 1.17e-5;
                     Data.col(3) = L;
+                    /*
                     DialogBoxParam(
                         g_hInst,
                         MAKEINTRESOURCE(DLG_MAIN),
                         hwnd,
                         DlgProc,
                         0
-                    );
+                    );*/
                     initial_model(elements, Data);
+                    HDC hdc = GetDC(hdraw);
+                    //Rectangle(hdc, 10,10,10,10);
+                    //SetWindowText(htext, "new text");
+                    ReleaseDC(hdraw, hdc);
                     break;
             }
             break;
