@@ -34,7 +34,6 @@ float dimension(int i, int j){
 }
 
 void least_squares(MatrixXd Data, MatrixXd PHI, VectorXd dens, float prev_alpha, float RMS_rel_prev) {
-
     VectorXd g_c = PHI * dens;
     add_csv(g_c);
     VectorXd diffs = Data.col(3) - g_c;
