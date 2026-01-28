@@ -80,7 +80,7 @@ Finally, for the whole boundary, accumulating every side:
 
 <img width="612" height="97" alt="image" src="https://github.com/user-attachments/assets/45df4962-7f58-4af7-860a-f5871b0e0206" />
 
-This procces must be repeated for each polygon. Finally, each observation will have n-polygons effects, n rows. Considering L observations, G will be a matrix of nxL dimensions. The last step is to build the Jacobian matrix from this G matrix, multiplying for \gamma and (z-z') and delta z'. The ideal case is to resolve the integral going along the whole initial model. However, discrete polygons can be take into account.
+This process must be repeated for each polygon. Finally, each observation will have n-polygons effects, n rows. Considering L observations, G will be a matrix of nxL dimensions. The last step is to build the Jacobian matrix from this G matrix, multiplying for \gamma and (z-z') and delta z'. The ideal case is to resolve the integral going along the whole initial model. However, discrete polygons can be take into account.
 
 #### Least Squares
 
@@ -136,12 +136,9 @@ This way the correction converges until it founds an step that produces an oscil
 
 #### Adjustment
 
-I have stated a 0.06 RMS_rel limit. Below that, the model starts oscilating. Following, a plot with the evolution of the inital model untill it gets similar to the anomaly:
+I have stated a 0.06 RMS_rel limit. Below that, the model starts oscilating. The following is a plot with showing each output for each model starting from the intial one. As you can see, it gets similar to the data collected:
 
 <img width="752" height="452" alt="image" src="https://github.com/user-attachments/assets/062473d7-10c3-4755-aa76-3282009fb376" />
 
-The next step is to use more realistic observation being that the measurements are not that at all. I have written all by my point of view it looks normal values.
 
-Also, the priority is on the adjustment process, I will try different approaches and regularizations algorithms, like for example, Tikhonov regularization commonly used at iversion problems.
-
-It you have any idea, or want help with something let's start a conversation and coordinate. Thanks for the reading!
+It you have any idea, or want help with something... let's start a conversation and coordinate. Thanks for the reading!
