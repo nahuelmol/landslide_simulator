@@ -1,13 +1,15 @@
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <stdio.h>
+#include <cstdlib>
 #include <math.h>
 #include <Eigen/Dense>
 #include <windows.h>
 #include <winuser.h>
 #include <wingdi.h>
 #include <commctrl.h>
-#include <stdio.h>
 
 #include "resource.h"
 #include "models.h"
@@ -17,6 +19,8 @@
 
 using Eigen::VectorXd;
 using Eigen::MatrixXd;
+using Eigen::Map;
+using Eigen::VectorXf;
 
 int main() {
     VectorXd L(10);
@@ -28,15 +32,37 @@ int main() {
         Data(i,2) = 0;
     }
 
-    L << 1e-5, 1.5e-5, 1.7e-5, 1.7e-5, 1.84e-5, 1.33e-5, 1.29e-5, 1.21e-5, 1.2e-5, 1.17e-5;
-    Data.col(3) = L;
+    std::string datapath = "data\\data.txt";
+    std::ifstream infile(datapath);
+    std::vector<std::string> lines;
+    std::string line;
+    std::vector<float> row;
+
+    int i = 0;
+    if(infile.is_open()){
+        while (std::getline(infile, line)){
+            std::stringstream ss(line);
+            std::string item;
+            while(std::getline(ss, item, '\t')){
+                row.push_back(std::atof(item.c_str()));
+            }
+            VectorXd result = Eigen::Map<Eigen::VectorXf>(row.data(), row.size()).cast<double>();
+            std::vector<float>().swap(row);
+            Data.row(i) = result;
+            i++;
+        }
+        infile.close();
+    }
+    //L << 1e-5, 1.5e-5, 1.7e-5, 1.7e-5, 1.84e-5, 1.33e-5, 1.29e-5, 1.21e-5, 1.2e-5, 1.17e-5;
+    //Data.col(3) = L;
     //make_csv(Data.col(0));
     //add_csv(Data.col(3));
     //implement();
     //plot("here.txt");
 
+    std::cout << Data << std::endl;
     std::string elements = "polygons";
-    initial_model(elements, Data) {
+    //initial_model(elements, Data) {
     return 0;
 }
 
