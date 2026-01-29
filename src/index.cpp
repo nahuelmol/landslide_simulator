@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -30,6 +29,7 @@ int main() {
         Data(i,0) = float(i);
         Data(i,1) = 0;
         Data(i,2) = 0;
+        Data(i,3) = 0;
     }
 
     std::string datapath = "data\\data.txt";
@@ -53,16 +53,13 @@ int main() {
         }
         infile.close();
     }
-    //L << 1e-5, 1.5e-5, 1.7e-5, 1.7e-5, 1.84e-5, 1.33e-5, 1.29e-5, 1.21e-5, 1.2e-5, 1.17e-5;
-    //Data.col(3) = L;
     //make_csv(Data.col(0));
     //add_csv(Data.col(3));
     //implement();
     //plot("here.txt");
 
-    std::cout << Data << std::endl;
     std::string elements = "polygons";
-    //initial_model(elements, Data) {
+    initial_model(elements, Data);
     return 0;
 }
 
