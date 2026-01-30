@@ -32,7 +32,6 @@ void Stack::add_phi(float phi_m, int i, int j, float z, float Pz){
     this->PHI(j,i) = G * (distance_z) * phi_m * (esp); 
 }
 
-
 Polygon Stack::get_polygon(int i){
     //return only polygon's z value
     return (this->locations)[i];

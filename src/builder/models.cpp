@@ -7,8 +7,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <Eigen/Dense>
-#include "blocks.h"
-#include "matrix_math.h"
 #include "set_stack.h"
 #include "export.h"
 
@@ -20,7 +18,7 @@ void limpiar_ANSI() {
     printf("\033[2J"); // \033[2J: Borra toda la pantalla
     printf("\033[H");  // \033[H: Mueve el cursor a la esquina superior izquierda (1,1)
     fflush(stdout);   // Asegura que se envíe la salida inmediatamente
-    //std::cout << "\033[31m" << "This text is red." << "\033[0m" << std::endl;
+    std::cout << "\033[32m" << "Running." << "\033[0m" << std::endl;
 }
 
 float dimension(int i, int j){
@@ -102,5 +100,4 @@ void initial_model(std::string elements, MatrixXd Data) {
 
     least_squares(Data, ST->PHI, densities, 0.1, 1.0);
 }
-
 

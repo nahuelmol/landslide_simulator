@@ -142,3 +142,16 @@ I have stated a 0.06 RMS_rel limit. Below that, the model starts oscilating. The
 
 
 It you have any idea, or want help with something... let's start a conversation and coordinate. Thanks for the reading!
+
+#### Building
+
+On windows, type the following command:
+```
+mingw32-make
+```
+
+It you have an older machine, run it using ansicon for printing the activate ansi escapes code: 
+
+```
+ansicon dext
+```
