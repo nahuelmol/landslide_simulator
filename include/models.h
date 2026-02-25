@@ -9,9 +9,23 @@
 using Eigen::VectorXd;
 using Eigen::MatrixXd;
 
-float dimension(int i, int j);
-float gen();
-void initial_model(std::string elements, MatrixXd Data);
-void least_squares(MatrixXd Data, MatrixXd dims, VectorXd dens, float alpha, double RMS_rel_prev);
+class Model {
+public:
+
+    std::string model_type;
+    MatrixXd data;
+    VectorXd calculated;
+    VectorXd densities;
+    MatrixXd dimensions;
+    int i;
+    int j;
+    int L;
+
+    Model(std::string model_type, MatrixXd data);
+    //float dimension(int i, int j);
+    float gen();
+    void initial();
+    void adjust(MatrixXd dims, VectorXd dens, float alpha, double RMS_rel_prev);
+};
 
 #endif //MODELS_H

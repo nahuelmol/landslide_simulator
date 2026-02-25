@@ -23,13 +23,13 @@ using Eigen::VectorXf;
 
 int main() {
     VectorXd L(10);
-    MatrixXd Data(10,4);
+    MatrixXd data(10,4);
 
     for(int i=0;i < 10;i++){
-        Data(i,0) = float(i);
-        Data(i,1) = 0;
-        Data(i,2) = 0;
-        Data(i,3) = 0;
+        data(i,0) = float(i);
+        data(i,1) = 0;
+        data(i,2) = 0;
+        data(i,3) = 0;
     }
 
     std::string datapath = "data\\data.txt";
@@ -48,18 +48,20 @@ int main() {
             }
             VectorXd result = Eigen::Map<Eigen::VectorXf>(row.data(), row.size()).cast<double>();
             std::vector<float>().swap(row);
-            Data.row(i) = result;
+            data.row(i) = result;
             i++;
         }
         infile.close();
     }
-    //make_csv(Data.col(0));
-    //add_csv(Data.col(3));
+    //make_csv(data.col(0));
+    //add_csv(data.col(3));
     //implement();
     //plot("here.txt");
 
-    std::string elements = "polygons";
-    initial_model(elements, Data);
+    Model* MODEL = new Model("polygons", data);
+    MODEL.initial();
+    MODEL.adjust();
+
     return 0;
 }
 
