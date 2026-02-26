@@ -39,8 +39,8 @@ float dimension(int i, int j){
     return result;
 }
 
-void Model::adjust(MatrixXd PHI, float prev_alpha, double RMS_rel_prev) {
-    VectorXd g_c = PHI * this->densities;
+void Model::adjust(double RMS_rel_prev) {
+    VectorXd g_c = (this->PHI) * this->densities;
     //add_csv(g_c);
     VectorXd diffs = (this->data).col(3) - g_c;
 
@@ -54,25 +54,24 @@ void Model::adjust(MatrixXd PHI, float prev_alpha, double RMS_rel_prev) {
         std::cout << "\nalpha:\n" << alpha << std::endl;
         //std::cout << "\ng_c:\n" << g_c << std::endl;
         //std::cout << "\nDensities:\n" << dens << std::endl;
-        alpha = prev_alpha * 0.99;
+        (this->alpha) = (this->alpha) * 0.99;
     } else {
         if(float(RMS_rel < float(RMS_rel_prev))){
-            alpha = prev_alpha * 0.99;
+            (this->alpha) = (this->alpha) * 0.99;
             double lambda = 1e-3;
-            int n = PHI.cols();
+            int n = (this->PHI).cols();
             MatrixXd I_lamb = lambda * Eigen::MatrixXd::Identity(n,n);
 
-            MatrixXd ATA = (PHI.transpose() * PHI);
-            VectorXd ATb = PHI.transpose() * diffs;
+            MatrixXd ATA = ((this->PHI).transpose() * PHI);
+            VectorXd ATb = (this->PHI).transpose() * diffs;
             VectorXd diffs_sigma = ATA.inverse() * ATb;
-            //VectorXd new_dens = dens + (alpha) * diffs_sigma;
-            this->densities = (this->densities) + alpha * diffs_sigma;
+            this->densities = (this->densities) + (this->alpha) * diffs_sigma;
 
             limpiar_ANSI();
             std::cout << "RMS_rel:" << RMS_rel << "\n";
-            std::cout << "alpha:" << alpha << "\n";
+            std::cout << "alpha:" << (this->alpha) << "\n";
 
-            this->adjust(PHI, alpha, RMS_rel);
+            this->adjust(RMS_rel);
         }
     }
 }
@@ -95,22 +94,19 @@ void Model::initial() {
         std::cout << "not recognized model type" << std::endl;
     }
 
-    //VectorXd densities(ST->n);
-    //MatrixXd dimensions(ST->n, this->L);
     //this->dimensions(ST->n, this->L);
-    
-    //VectorXd densities(ST->n);
 
     (this->densities).resize(ST->n);
     for (int j = 0; j<(ST->n); j++){
         float sigma = this->gen();
         (this->densities(j)) = sigma;
     }
-    std::cout << "hello: " << this->L << std::endl;
 
     //std::cout << "\nDensities:\n" << (this->densities) << std::endl;
     //std::cout << "\nLocations:\n" << ST->locations << std::endl;
 
-    this->adjust(ST->PHI, 0.1, 1.0);
+    (this->PHI).resize((ST->PHI).rows(), (ST->PHI).cols());
+    this->PHI = ST->PHI;
+    this->adjust(1.0);
 }
 

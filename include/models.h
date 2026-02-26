@@ -20,12 +20,14 @@ public:
     int i;
     int j;
     int L;
+    float alpha;
+    MatrixXd PHI;
 
     Model(std::string model_type, MatrixXd data);
     //float dimension(int i, int j);
     float gen();
     void initial();
-    void adjust(MatrixXd dims, float alpha, double RMS_rel_prev);
+    void adjust(double RMS_rel_prev);
 };
 
 #endif //MODELS_H
