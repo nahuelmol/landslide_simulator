@@ -18,7 +18,8 @@ const double G = 6.67430e-11;
 Model::Model(std::string model_type, MatrixXd data) {
     this->data = data;
     this->model_type = model_type;
-    this->L = int(data.col(3).size());
+    this->L = int((this->data).col(3).size());
+    this->calculated(this->L);
 }
 
 void limpiar_ANSI() {
@@ -38,8 +39,8 @@ float dimension(int i, int j){
     return result;
 }
 
-void Model::adjust(MatrixXd PHI, VectorXd dens, float prev_alpha, float RMS_rel_prev) {
-    VectorXd g_c = PHI * dens;
+void Model::adjust(MatrixXd PHI, float prev_alpha, double RMS_rel_prev) {
+    VectorXd g_c = PHI * this->densities;
     //add_csv(g_c);
     VectorXd diffs = (this->data).col(3) - g_c;
 
@@ -64,13 +65,14 @@ void Model::adjust(MatrixXd PHI, VectorXd dens, float prev_alpha, float RMS_rel_
             MatrixXd ATA = (PHI.transpose() * PHI);
             VectorXd ATb = PHI.transpose() * diffs;
             VectorXd diffs_sigma = ATA.inverse() * ATb;
-            VectorXd new_dens = dens + (alpha) * diffs_sigma;
+            //VectorXd new_dens = dens + (alpha) * diffs_sigma;
+            this->densities = (this->densities) + alpha * diffs_sigma;
 
             limpiar_ANSI();
             std::cout << "RMS_rel:" << RMS_rel << "\n";
             std::cout << "alpha:" << alpha << "\n";
 
-            this->adjust(PHI, new_dens, alpha, RMS_rel);
+            this->adjust(PHI, alpha, RMS_rel);
         }
     }
 }
@@ -93,18 +95,25 @@ void Model::initial() {
         std::cout << "not recognized model type" << std::endl;
     }
 
-    VectorXd calculated(this->L);
-    VectorXd densities(ST->n);
-    MatrixXd dimensions(ST->n, this->L);
+    /*
+    //VectorXd calculated(this->L);
+    //VectorXd densities(ST->n);
+    //MatrixXd dimensions(ST->n, this->L);
+
+    //VectorXd densities(ST->n);
+    std::cout << "hello: " << this->L << std::endl;
+    this->dimensions(ST->n, this->L);
 
     for (int j = 0; j<(ST->n); j++){
         float sigma = this->gen();
         densities(j) = sigma;
     }
+    this->densities = densities;
+    */
 
-    //std::cout << "\nDensities:\n" << densities << std::endl;
+    //std::cout << "\nDensities:\n" << (this->densities) << std::endl;
     //std::cout << "\nLocations:\n" << ST->locations << std::endl;
 
-    this->adjust(ST->PHI, densities, 0.1, 1.0);
+    //this->adjust(ST->PHI, 0.1, 1.0);
 }
 
