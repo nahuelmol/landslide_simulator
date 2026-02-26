@@ -65,7 +65,7 @@ int main() {
     //implement();
     //plot("here.txt");
 
-    Model* MODEL = new Model("polygons", data);
+    Model* MODEL = new Model("polygons", data, 0.1);
     MODEL->initial();
 
     return 0;

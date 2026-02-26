@@ -15,9 +15,12 @@ using Eigen::VectorXd;
 using Eigen::MatrixXd;
 const double G = 6.67430e-11;
 
-Model::Model(std::string model_type, MatrixXd data) {
+Model::Model(std::string model_type, MatrixXd data, float prev_alpha) {
     this->data = data;
     this->model_type = model_type;
+    this->alpha = 0.0;
+    this->SSE = 0.06;
+    this->prev_alpha = prev_alpha;
     this->L = int((this->data).col(3).size());
     (this->calculated).resize(this->L);
 }
@@ -46,18 +49,16 @@ void Model::adjust(double RMS_rel_prev) {
 
     double RMS = std::sqrt(diffs.squaredNorm() / diffs.size());
     double RMS_rel = RMS / (this->data).col(3).norm();
-    float SSE = 0.06;
-    float alpha = 0.0;
 
     if (RMS_rel < SSE){
         std::cout << "\nRMS_rel:\n" << RMS_rel << std::endl;
-        std::cout << "\nalpha:\n" << alpha << std::endl;
+        std::cout << "\nalpha:\n" << (this->prev_alpha) << std::endl;
         //std::cout << "\ng_c:\n" << g_c << std::endl;
         //std::cout << "\nDensities:\n" << dens << std::endl;
-        (this->alpha) = (this->alpha) * 0.99;
+        (this->alpha) = (this->prev_alpha) * 0.99;
     } else {
         if(float(RMS_rel < float(RMS_rel_prev))){
-            (this->alpha) = (this->alpha) * 0.99;
+            (this->alpha) = (this->prev_alpha) * 0.99;
             double lambda = 1e-3;
             int n = (this->PHI).cols();
             MatrixXd I_lamb = lambda * Eigen::MatrixXd::Identity(n,n);

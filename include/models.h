@@ -21,9 +21,11 @@ public:
     int j;
     int L;
     float alpha;
+    float prev_alpha;
     MatrixXd PHI;
+    float SSE;
 
-    Model(std::string model_type, MatrixXd data);
+    Model(std::string model_type, MatrixXd data, float prev_alpha);
     //float dimension(int i, int j);
     float gen();
     void initial();
