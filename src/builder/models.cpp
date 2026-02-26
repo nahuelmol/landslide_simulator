@@ -19,7 +19,7 @@ Model::Model(std::string model_type, MatrixXd data) {
     this->data = data;
     this->model_type = model_type;
     this->L = int((this->data).col(3).size());
-    this->calculated(this->L);
+    (this->calculated).resize(this->L);
 }
 
 void limpiar_ANSI() {
@@ -95,25 +95,22 @@ void Model::initial() {
         std::cout << "not recognized model type" << std::endl;
     }
 
-    /*
-    //VectorXd calculated(this->L);
     //VectorXd densities(ST->n);
     //MatrixXd dimensions(ST->n, this->L);
-
+    //this->dimensions(ST->n, this->L);
+    
     //VectorXd densities(ST->n);
-    std::cout << "hello: " << this->L << std::endl;
-    this->dimensions(ST->n, this->L);
 
+    (this->densities).resize(ST->n);
     for (int j = 0; j<(ST->n); j++){
         float sigma = this->gen();
-        densities(j) = sigma;
+        (this->densities(j)) = sigma;
     }
-    this->densities = densities;
-    */
+    std::cout << "hello: " << this->L << std::endl;
 
     //std::cout << "\nDensities:\n" << (this->densities) << std::endl;
     //std::cout << "\nLocations:\n" << ST->locations << std::endl;
 
-    //this->adjust(ST->PHI, 0.1, 1.0);
+    this->adjust(ST->PHI, 0.1, 1.0);
 }
 

@@ -59,7 +59,7 @@ int main() {
     //plot("here.txt");
 
     Model* MODEL = new Model("polygons", data);
-    //MODEL->initial();
+    MODEL->initial();
 
     return 0;
 }
