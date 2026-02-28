@@ -11,7 +11,6 @@ using Eigen::MatrixXd;
 
 class Model {
 public:
-
     std::string model_type;
     MatrixXd data;
     VectorXd calculated;
@@ -27,7 +26,6 @@ public:
 
     Model(std::string model_type, MatrixXd data, float prev_alpha);
     //float dimension(int i, int j);
-    float gen();
     void initial();
     void adjust(double RMS_rel_prev);
 };

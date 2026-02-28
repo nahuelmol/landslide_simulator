@@ -4,12 +4,13 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <cstdlib>
 #include <ctime>
 #include <Eigen/Dense>
+
 #include "set_stack.h"
 #include "export.h"
 #include "models.h"
+#include "utils.h"
 
 using Eigen::VectorXd;
 using Eigen::MatrixXd;
@@ -23,23 +24,6 @@ Model::Model(std::string model_type, MatrixXd data, float prev_alpha) {
     this->prev_alpha = prev_alpha;
     this->L = int((this->data).col(3).size());
     (this->calculated).resize(this->L);
-}
-
-void limpiar_ANSI() {
-    printf("\033[2J"); // \033[2J: Borra toda la pantalla
-    printf("\033[H");  // \033[H: Mueve el cursor a la esquina superior izquierda (1,1)
-    fflush(stdout);   // Asegura que se envíe la salida inmediatamente
-    std::cout << "\033[32m" << "Running." << "\033[0m" << std::endl;
-}
-
-float dimension(int i, int j){
-    //this should return 1/r^2
-    float xdelta = 1;
-    float z = 5;
-    float x = std::abs(i-j) * xdelta;
-    float d = sqrt(std::pow(x,2) + std::pow(z,2));
-    float result = 1.0/(std::pow(d,2));
-    return result;
 }
 
 void Model::adjust(double RMS_rel_prev) {
@@ -63,7 +47,7 @@ void Model::adjust(double RMS_rel_prev) {
             int n = (this->PHI).cols();
             MatrixXd I_lamb = lambda * Eigen::MatrixXd::Identity(n,n);
 
-            MatrixXd ATA = ((this->PHI).transpose() * PHI);
+            MatrixXd ATA = ((this->PHI).transpose() * (this->PHI));
             VectorXd ATb = (this->PHI).transpose() * diffs;
             VectorXd diffs_sigma = ATA.inverse() * ATb;
             this->densities = (this->densities) + (this->alpha) * diffs_sigma;
@@ -77,12 +61,6 @@ void Model::adjust(double RMS_rel_prev) {
     }
 }
 
-float Model::gen() {
-    srand(static_cast<unsigned int>(time(nullptr)));
-    float n = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-    float result = n * 2.7;
-    return result;
-}
 
 void Model::initial() {
     Stack* ST;
@@ -99,8 +77,7 @@ void Model::initial() {
 
     (this->densities).resize(ST->n);
     for (int j = 0; j<(ST->n); j++){
-        float sigma = this->gen();
-        (this->densities(j)) = sigma;
+        (this->densities(j)) = gen();
     }
 
     //std::cout << "\nDensities:\n" << (this->densities) << std::endl;
